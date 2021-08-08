@@ -8,6 +8,11 @@ export const baseConfig: ConnectionOptions = {
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'postgres',
+    migrations: ["/src/migration/*.js"],
+    cli: {
+        "migrationsDir": "src/migration",
+        "entitiesDir": "src/entity"
+    },
     synchronize: false,
     migrationsRun: false,
 }

@@ -1,37 +1,39 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./dto";
 
-@Controller('user')
+@Controller("user")
 export class UserController {
     constructor(
         private readonly userService: UserService
     ) {
     }
 
-    @Post('create')
-    create(@Body() createUserDto: CreateUserDto) {
-        console.log(createUserDto.roles);
-        return this.userService.create(createUserDto);
+    @Post("create")
+    async create(@Body() createUserDto: CreateUserDto) {
+        const user = await this.userService.create(createUserDto);
+        return user ? { success: true } : { success: false };
     }
 
     @Get()
-    getAll() {
+    async getAll() {
         return this.userService.getAll();
     }
 
-    @Get(':id')
-    get(@Param('id') id: string) {
+    @Get(":id")
+    async get(@Param("id") id: string) {
         return this.userService.get(id);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update(id, updateUserDto);
+    @Patch(":id")
+    async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+        const user = await this.userService.update(id, updateUserDto);
+        return user ? { success: true } : { success: false };
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.userService.remove(id);
+    @Delete(":id")
+    async remove(@Param("id") id: string) {
+        const user = await this.userService.remove(id);
+        return user ? { success: true } : { success: false };
     }
 }
